@@ -35,8 +35,8 @@ var universalSpeedModifier = 2000;
 
 function preload ()
 {
-    this.load.image('ball', './assets/circle.png');
-    this.load.image('tile', './assets/tile.png');
+    this.load.image('ball', '/assets/circle.png');
+    this.load.image('tile', '/assets/tile.png');
 
     //Adding various functionality options
     document.addEventListener('pause-game', (e) => {
