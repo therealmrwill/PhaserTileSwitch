@@ -70,7 +70,7 @@ function create(){
 
 
     for(let i = 5; i < 360; i += 10){
-        ballInfoArray.push(getBallInfo(64, 64, i, 1, 'dark'))
+        ballInfoArray.push(getBallInfo(64, 64, i, 1, 'light'))
     }
 
     // ballInfoArray.push(getBallInfo(16, 16, 240, 1, 'dark'))
