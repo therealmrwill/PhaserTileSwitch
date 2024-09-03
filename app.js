@@ -1,8 +1,8 @@
 
 var config = {
     type: Phaser.AUTO,
-    width: 2048,
-    height: 2048,
+    width: 512,
+    height: 512,
     physics: {
         default: 'arcade',
         arcade: {
@@ -30,12 +30,14 @@ var lightColor = 0xf5edba;
 var darkColor = 0x17434b;
 
 
-var universalSpeedModifier = 2000;
+var universalSpeedModifier = 1000;
 
 
 function preload ()
 {
     this.load.image('ball', '/assets/circle.png');
+
+    //Had a weird bug with this not working correctly 
     this.load.image('tile', '/assets/Tile.png');
 
     //Adding various functionality options
@@ -61,24 +63,29 @@ function create(){
 
 
     //Tile Setup
-    createTiles(tiles, (x, y) => false, []);
+    createTiles(tiles, (x, y) => x < 16, []);
     // (x + y) > 32
     //(x < 128 && y < 128) || (x > 128 && y > 128)
 
     //Ball Setup
     var ballInfoArray = [];
 
-
-    for(let i = 5; i < 360; i += 10){
-        ballInfoArray.push(getBallInfo(64, 64, i, 1, 'light'))
-    }
-
-    // ballInfoArray.push(getBallInfo(16, 16, 240, 1, 'dark'))
     
-    // ballInfoArray.push(getBallInfo(32, 32, 55, 1, 'dark'))
-    // ballInfoArray.push(getBallInfo(32, 32, 95, 1, 'dark'))
-    // ballInfoArray.push(getBallInfo(32, 32, 185, 1, 'dark'))
-    // ballInfoArray.push(getBallInfo(32, 32, 285, 1, 'dark'))
+
+
+    // for(let i = 5; i < 360; i += 10){
+    //     ballInfoArray.push(getBallInfo(64, 64, i, 1, 'dark'))
+    // }
+
+    //Creating 2 randomly placed dark balls
+    ballInfoArray.push(createRandomBall({xMin: 0, xMax: 15}, {yMin: 0, yMax: 32}, 1, 'dark'))
+    ballInfoArray.push(createRandomBall({xMin: 0, xMax: 15}, {yMin: 0, yMax: 32}, 1, 'dark'))
+
+    //Creating 2 randomly placed light balls
+    ballInfoArray.push(createRandomBall({xMin: 16, xMax: 32}, {yMin: 0, yMax: 32}, 1, 'light'))
+    ballInfoArray.push(createRandomBall({xMin: 16, xMax: 32}, {yMin: 0, yMax: 32}, 1, 'light'))
+    
+    
 
     createBalls(balls, ballInfoArray);
 
@@ -155,7 +162,16 @@ function flipTile(tile){
 
 }
 
+function createRandomBall(xBounds, yBounds, speed, theme){
+    const {xMin, xMax} = xBounds
+    const {yMin, yMax} = yBounds
 
+    const x = (Math.random() * (xMax - xMin)) + xMin
+    const y = (Math.random() * (yMax - yMin)) + yMin
+    const r = (Math.random() * (360 - 1)) + 1
+
+    return getBallInfo(x, y, r, speed, theme)
+}
 
 function getBallInfo(x, y, direction, speed, theme){
     var numDirection;
